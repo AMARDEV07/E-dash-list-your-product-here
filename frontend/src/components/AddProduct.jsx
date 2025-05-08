@@ -13,7 +13,7 @@ function AddProduct() {
     const [specifications, setSpecifications] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [error, setError] = useState(false); // Validation check karne ke liye
-    const backendUrl=import.meta.env.VITE_BACKEND_URL;
+    const backendUrl=imp;
 
 
 
