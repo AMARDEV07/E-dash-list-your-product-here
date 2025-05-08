@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./db/config");
 const User = require("./db/user");
-const Product = require("./db/product");
+const Product = require("./db/product"); // Fixed case sensitivity issue here
 const jwt = require("jsonwebtoken");
 const jwtKey = "e-comm"; 
 const mongoose = require("mongoose");
@@ -13,12 +13,8 @@ const mongoose = require("mongoose");
 dotenv.config();
 const app = express();
 
-<<<<<<< HEAD
 
 
-=======
-// Updated CORS configuration to handle multiple origins
->>>>>>> d5b3afac5a2ae52b574159e3f4762e8bd9dff699
 app.use(cors({
   origin: function(origin, callback) {
     // Allow requests with no origin (like mobile apps, curl requests)
@@ -28,7 +24,6 @@ app.use(cors({
     const allowedOrigins = [
       'https://e-dash-list-your-product-here-bcoi.vercel.app',
       'https://e-dash-list-your-product-here-bcoi-m5sj5jzea.vercel.app',
-<<<<<<< HEAD
       'https://e-dash-list-your-product-here-bcoi-git-main.vercel.app',
       // Add your Vercel frontend URL here if different from above
       'http://localhost:5173', // For local development
@@ -42,16 +37,6 @@ app.use(cors({
       callback(null, true);
     } else {
       console.log("CORS blocked for origin:", origin);
-=======
-      // Add any other URLs your frontend might use
-      'https://e-dash-list-your-product-here-bcoi-git-main.vercel.app',
-      'http://localhost:5173' // For local development
-    ];
-    
-    if(allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
->>>>>>> d5b3afac5a2ae52b574159e3f4762e8bd9dff699
       callback(new Error('CORS policy violation'));
     }
   },
@@ -59,6 +44,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+
 
 app.use(express.json());
 
