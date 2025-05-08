@@ -49,7 +49,7 @@ function AddProduct() {
 
         // Backend ko POST request bhej rahe hain product details ke saath
 
-        const result = await fetch("http://localhost:3000/add-product", {
+        const result = await fetch("https://e-dash-list-your-product-here-2.onrender.com/add-product", {
             method: "POST",
             body: JSON.stringify({
                 name,
