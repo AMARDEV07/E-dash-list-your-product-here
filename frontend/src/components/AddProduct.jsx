@@ -1,9 +1,7 @@
 import { useState } from 'react';
-
+import API_CONFIG from '../config/api'; // Import the API config
 
 function AddProduct() {
-
-
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [category, setCategory] = useState("");
@@ -12,30 +10,25 @@ function AddProduct() {
     const [features, setFeatures] = useState("");
     const [specifications, setSpecifications] = useState("");
     const [imageUrl, setImageUrl] = useState("");
-    const [error, setError] = useState(false); // Validation check karne ke liye
-
-
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const addProduct = async () => {
-
         // Basic validation check
-
         if (!name || !price || !category || !company) {
-            setError(true); // Agar field empty hai toh error dikhao
+            setError(true);
             return; 
         }
-
-
 
         // Logged-in user ka ID localStorage se nikaal rahe hain
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user._id;
         console.log("User ID is:", userId);
 
-
-
         // Features ko comma se split karke array bana rahe hain
         const featuresArray = features ? features.split(',').map(item => item.trim()) : [];
+        
         // Specifications ko JSON me parse karne ki koshish
         let specsObject = {};
         try {
@@ -45,51 +38,67 @@ function AddProduct() {
             specsObject = { details: specifications };
         }
 
+        try {
+            setLoading(true);
+            // Backend ko POST request bhej rahe hain product details ke saath
+            const result = await fetch(`${API_CONFIG.BASE_URL}/add-product`, {
+                method: "POST",
+                body: JSON.stringify({
+                    name,
+                    price,
+                    category,
+                    company,
+                    userId,
+                    description,
+                    features: featuresArray,
+                    specifications: specsObject,
+                    imageUrl
+                }),
+                headers: API_CONFIG.getHeaders(),
+                credentials: "include"
+            });
 
-
-        // Backend ko POST request bhej rahe hain product details ke saath
-
-        const result = await fetch("http://localhost:3000/add-product", {
-            method: "POST",
-            body: JSON.stringify({
-                name,
-                price,
-                category,
-                company,
-                userId,
-                description,
-                features: featuresArray,
-                specifications: specsObject,
-                imageUrl
-            }),
-            headers: {
-                "Content-Type": "application/json",
-                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+            if (!result.ok) {
+                throw new Error(`HTTP error! Status: ${result.status}`);
             }
 
-        });
-
-        const data = await result.json();
-        console.log("Product added:", data);
-
-
-        setName("");
-        setPrice("");
-        setCategory("");
-        setCompany("");
-        setDescription("");
-        setFeatures("");
-        setSpecifications("");
-        setImageUrl("");
-        setError(false);
+            const data = await result.json();
+            console.log("Product added:", data);
+            
+            // Clear the form and show success message
+            setName("");
+            setPrice("");
+            setCategory("");
+            setCompany("");
+            setDescription("");
+            setFeatures("");
+            setSpecifications("");
+            setImageUrl("");
+            setError(false);
+            setSuccess(true);
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => setSuccess(false), 3000);
+            
+        } catch (error) {
+            console.error("Error adding product:", error);
+            setError(true);
+        } finally {
+            setLoading(false);
+        }
     };
-
 
     return (
         <div className='add-product-main'>
             <div className='add-product-header'>
                 <h1>Add Product</h1>
             </div>
+
+            {success && (
+                <div className="success-message">
+                    Product added successfully!
+                </div>
+            )}
 
             <div className='add-product-inp-div'>
                 {/* Product ka naam input */}
@@ -151,7 +160,6 @@ function AddProduct() {
                 />
 
                 {/* Product specifications input (JSON ya normal text) */}
-
                 <textarea
                     placeholder="Enter specifications (JSON format preferred or normal)"
                     className='InputBox'
@@ -161,7 +169,6 @@ function AddProduct() {
                 />
 
                 {/* Product image ka URL input */}
-
                 <input
                     type="text"
                     placeholder="Enter product image URL"
@@ -172,7 +179,13 @@ function AddProduct() {
             </div>
 
             <div className='add-product-btn-div'>
-                <button className='addbtn' onClick={addProduct}>Add Product</button>
+                <button 
+                    className='addbtn' 
+                    onClick={addProduct}
+                    disabled={loading}
+                >
+                    {loading ? 'Adding...' : 'Add Product'}
+                </button>
             </div>
         </div>
     );

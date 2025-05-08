@@ -13,12 +13,41 @@ const mongoose = require("mongoose");
 dotenv.config();
 const app = express();
 
+
+
 app.use(cors({
-  origin:"https://e-dash-list-your-product-here-bcoi.vercel.app",
-  credentials:true
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if(!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      'https://e-dash-list-your-product-here-bcoi.vercel.app',
+      'https://e-dash-list-your-product-here-bcoi-m5sj5jzea.vercel.app',
+      'https://e-dash-list-your-product-here-bcoi-git-main.vercel.app',
+      // Add your Vercel frontend URL here if different from above
+      'http://localhost:5173', // For local development
+      'https://e-dash-list-your-product-here-3.onrender.com' // Backend URL (for same-origin requests)
+    ];
+    
+    // Check if the origin is in our allowed list OR if it matches a pattern like vercel.app
+    if(allowedOrigins.indexOf(origin) !== -1 || 
+       origin.endsWith('vercel.app') || 
+       !origin) {
+      callback(null, true);
+    } else {
+      console.log("CORS blocked for origin:", origin);
+      callback(new Error('CORS policy violation'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
+
+
 
 // User Register
 app.post("/register", async (req, res) => {

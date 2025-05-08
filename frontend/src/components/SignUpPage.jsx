@@ -2,17 +2,17 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import API_CONFIG from '../config/api'; // Import the API config
 
 function SignUpPage() {
   // Input states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
  
   const navigate = useNavigate();
-
 
   // If user already logged in, redirect to home
   useEffect(() => {
@@ -22,10 +22,8 @@ function SignUpPage() {
     }
   }, []);
 
-
   // Submit handler
   const submit = async () => {
-
     // === Name Validation ===
     if (!name.trim()) {
       toast.error("Name is required!");
@@ -35,7 +33,6 @@ function SignUpPage() {
       toast.error("Name must contain only letters and be at least 2 characters.");
       return;
     }
-
 
     // === Email Validation ===
     if (!email.trim()) {
@@ -63,30 +60,42 @@ function SignUpPage() {
       return;
     }
 
-    // === API Call ===
-    let result = await fetch("http://localhost:3000/register", {
-      method: "POST",
-      body: JSON.stringify({ name, email, password }),
-      headers: { "Content-Type": "application/json" },
-    });
+    try {
+      setLoading(true);
+      
+      // === API Call ===
+      let result = await fetch(`${API_CONFIG.BASE_URL}/register`, {
+        method: "POST",
+        body: JSON.stringify({ name, email, password }),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include"
+      });
 
-    result = await result.json();
+      if (!result.ok) {
+        throw new Error(`HTTP error! Status: ${result.status}`);
+      }
 
-    // === Handle Result and save them in local storage ===
-    if (result) {
-      toast.success("Registration Completed!");
-      localStorage.setItem("user", JSON.stringify(result.result)); 
-      localStorage.setItem("token", JSON.stringify(result.auth));// Save to localStorage
-      setTimeout(() => navigate("/"), 1000); //jesi login hoga navigate krna home pa
+      result = await result.json();
+
+      // === Handle Result and save them in local storage ===
+      if (result) {
+        toast.success("Registration Completed!");
+        localStorage.setItem("user", JSON.stringify(result.result)); 
+        localStorage.setItem("token", JSON.stringify(result.auth));
+        setTimeout(() => navigate("/"), 1000);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Registration failed. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="signup-div">
       <div className="container">
-
         {/* //left section */}
-
         <div className="signup-details">
           <div className="Header-div">
             <img className="icon" src="src/assets/log-in.png" alt="" />
@@ -110,13 +119,13 @@ function SignUpPage() {
 
           <div className="password-input-wrapper">
             <input
-              type={showPassword ? "text" : "password"} // Toggle password visibility
+              type={showPassword ? "text" : "password"}
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <span
-              onClick={() => setShowPassword(!showPassword)} // Toggle password visibility state
+              onClick={() => setShowPassword(!showPassword)}
               style={{
                 cursor: "pointer",
                 marginLeft: "-70px",
@@ -124,28 +133,29 @@ function SignUpPage() {
                 color: "grey"
               }}
             >
-              {showPassword ? <i className="fa-solid fa-eye"></i> : <i className="fa-solid fa-eye-slash"></i>} {/* Emoji toggle for password visibility */}
+              {showPassword ? <i className="fa-solid fa-eye"></i> : <i className="fa-solid fa-eye-slash"></i>}
             </span>
           </div>
 
-          <button onClick={submit}>Sign Up</button>
+          <button 
+            onClick={submit}
+            disabled={loading}
+          >
+            {loading ? "Signing Up..." : "Sign Up"}
+          </button>
 
           <div className="old-acc">
-            <p> have an account? <Link to="/login">Login</Link></p>
+            <p>Already have an account? <Link to="/login">Login</Link></p>
           </div>
         </div>
 
         {/* === right image section === */}
-        
         <div className="signup-img-div">
           <img src="/src/assets/signup.jpg" alt="Signup Visual" />
         </div>
       </div>
 
-
-
       {/* === Toastify Alert Container === */}
-
       <ToastContainer />
     </div>
   );

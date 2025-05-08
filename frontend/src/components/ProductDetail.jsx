@@ -1,35 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import API_CONFIG from '../config/api'; // Import the API config
 
 function ProductDetail() {
-
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const params = useParams();
 
   useEffect(() => {
     getProductDetails();
   }, []);
 
-
-
-
   const getProductDetails = async () => {
-
-    
     try {
       setLoading(true);
-      const result = await fetch(`http://localhost:3000/product/${params.id}`,{
-        headers: {
-          authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
-        }
+      const result = await fetch(`${API_CONFIG.BASE_URL}/product/${params.id}`, {
+        headers: API_CONFIG.getHeaders()
       });
-      const data = await result.json();
       
+      if (!result.ok) {
+        throw new Error(`HTTP error! Status: ${result.status}`);
+      }
+      
+      const data = await result.json();
       setProduct(data);
       
     } catch (error) {
       console.error("Error fetching product details:", error);
+      setError("Failed to load product details. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -37,6 +36,10 @@ function ProductDetail() {
 
   if (loading) {
     return <div className="product-detail-loading">Loading product details...</div>;
+  }
+
+  if (error) {
+    return <div className="product-detail-error">{error}</div>;
   }
 
   if (!product) {
