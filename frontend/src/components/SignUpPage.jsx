@@ -64,7 +64,7 @@ function SignUpPage() {
     }
 
     // === API Call ===
-    let result = await fetch("http://localhost:3000/register", {
+    let result = await fetch("https://e-dash-list-your-product-here-2.onrender.com/register", {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: { "Content-Type": "application/json" },
