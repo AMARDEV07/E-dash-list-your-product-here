@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./db/config");
 const User = require("./db/user");
-const Product = require("./db/product"); // Fixed case sensitivity issue here
+const Product = require("./db/product");
 const jwt = require("jsonwebtoken");
 const jwtKey = "e-comm"; 
 const mongoose = require("mongoose");
@@ -13,9 +13,30 @@ const mongoose = require("mongoose");
 dotenv.config();
 const app = express();
 
+// Updated CORS configuration to handle multiple origins
 app.use(cors({
-  origin:"https://e-dash-list-your-product-here-bcoi.vercel.app",
-  credentials:true
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if(!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      'https://e-dash-list-your-product-here-bcoi.vercel.app',
+      'https://e-dash-list-your-product-here-bcoi-m5sj5jzea.vercel.app',
+      // Add any other URLs your frontend might use
+      'https://e-dash-list-your-product-here-bcoi-git-main.vercel.app',
+      'http://localhost:5173' // For local development
+    ];
+    
+    if(allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy violation'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
