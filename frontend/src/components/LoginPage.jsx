@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API_CONFIG from '../config/api'; // Import the API config
+// Import image properly
+import loginIcon from '../assets/log-in.png';
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -64,7 +66,7 @@ function LoginPage() {
     <div className="signup-div">
       <div className="container">
         <div className="login-details">
-          <img className="icon" src="src/assets/log-in.png" alt="" />
+          <img className="icon" src={loginIcon} alt="Login Icon" />
           <h1 className="signup-h1">Login to Your Account</h1>
           <p className="sigup-p">Enter your email and password to login.</p>
 

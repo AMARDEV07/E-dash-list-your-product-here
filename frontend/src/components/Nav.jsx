@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// Import image properly
+import dashIcon from '../assets/e-dash-icon.png';
 
 function Nav() {
-
-  
   const navigate = useNavigate();
   //responsive nab
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +30,7 @@ function Nav() {
     <div className="header">
       {/* Logo Section */}
       <div className="logo-div">
-        <img src="/src/assets/e-dash-icon.png" alt="icon" />
+        <img src={dashIcon} alt="icon" />
         <span>e-dash</span>
       </div>
 

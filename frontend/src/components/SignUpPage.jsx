@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API_CONFIG from '../config/api'; // Import the API config
+// Import images properly
+import loginIcon from '../assets/log-in.png';
+import signupImage from '../assets/signup.jpg';
 
 function SignUpPage() {
   // Input states
@@ -98,7 +101,7 @@ function SignUpPage() {
         {/* //left section */}
         <div className="signup-details">
           <div className="Header-div">
-            <img className="icon" src="src/assets/log-in.png" alt="" />
+            <img className="icon" src={loginIcon} alt="Login Icon" />
             <h1 className="signup-h1">Create an account</h1>
             <p className="sigup-p">Lorem ipsum dolor sit amet.</p>
           </div>
@@ -151,7 +154,7 @@ function SignUpPage() {
 
         {/* === right image section === */}
         <div className="signup-img-div">
-          <img src="/src/assets/signup.jpg" alt="Signup Visual" />
+          <img src={signupImage} alt="Signup Visual" />
         </div>
       </div>
 
