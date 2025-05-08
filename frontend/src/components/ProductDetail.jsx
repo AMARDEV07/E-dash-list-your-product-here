@@ -6,6 +6,7 @@ function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const params = useParams();
+  const backendUrl=import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     getProductDetails();
@@ -19,7 +20,7 @@ function ProductDetail() {
     
     try {
       setLoading(true);
-      const result = await fetch(`http://localhost:3000/product/${params.id}`,{
+      const result = await fetch(`${backendUrl}/product/${params.id}`,{
         headers: {
           authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
         }

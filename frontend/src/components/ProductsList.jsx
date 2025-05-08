@@ -5,6 +5,7 @@ function ProductsList() {
   const [products, setProducts] = useState([]);
   const [searchKey, setSearchKey] = useState('');
   const navigate = useNavigate();
+  const backendUrl=import.meta.env.VITE_BACKEND_URL;
 
   // Component mount hone pe saare products fetch ho jaayenge
   useEffect(() => {
@@ -15,7 +16,7 @@ function ProductsList() {
   // Sare products backend se laa rahe hain
   
   const getProducts = async () => {
-    const result = await fetch("http://localhost:3000/products", {
+    const result = await fetch(`${backendUrl}/products`, {
       headers: {
         authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
       }
@@ -33,7 +34,7 @@ function ProductsList() {
   const deleteProduct = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
-    const response = await fetch(`http://localhost:3000/product/${id}`, {
+    const response = await fetch(`${backendUrl}/product/${id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
@@ -56,7 +57,7 @@ function ProductsList() {
     setSearchKey(key);
 
     if (key) {
-      let result = await fetch(`http://localhost:3000/search/${key}`,{
+      let result = await fetch(`${backendUrl}/search/${key}`,{
         headers: {
           authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
         }

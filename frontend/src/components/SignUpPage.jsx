@@ -9,7 +9,7 @@ function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
-
+  const backendUrl=import.meta.env.VITE_BACKEND_URL;
  
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ function SignUpPage() {
     }
 
     // === API Call ===
-    let result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, {
+    let result = await fetch(`${backendUrl}/register`, {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: { "Content-Type": "application/json" },

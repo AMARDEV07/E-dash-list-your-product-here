@@ -8,6 +8,7 @@ function UpdateProduct() {
   const [company, setCompany] = useState("");
   const navigate = useNavigate();
   const params = useParams();
+  const backendUrl=import.meta.env.VITE_BACKEND_URL;
 
   // Fetch current product details once component loads
   useEffect(() => {
@@ -22,7 +23,7 @@ function UpdateProduct() {
   const getUpdateDetails = async () => {
 
     
-      const result = await fetch(`http://localhost:3000/product/${params.id}`,{
+      const result = await fetch(`${backendUrl}/product/${params.id}`,{
         headers: {
           authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
         }
@@ -39,7 +40,7 @@ function UpdateProduct() {
 
   const addProduct = async () => {
   
-      const result = await fetch(`http://localhost:3000/product/${params.id}`, {
+      const result = await fetch(`${backendUrl}/product/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
