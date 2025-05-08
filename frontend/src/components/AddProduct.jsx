@@ -58,9 +58,34 @@ function AddProduct() {
                 credentials: "include"
             });
 
+<<<<<<< HEAD
             if (!result.ok) {
                 throw new Error(`HTTP error! Status: ${result.status}`);
             }
+=======
+
+        // Backend ko POST request bhej rahe hain product details ke saath
+
+        const result = await fetch("https://e-dash-list-your-product-here-3.onrender.com/add-product", {
+            method: "POST",
+            body: JSON.stringify({
+                name,
+                price,
+                category,
+                company,
+                userId,
+                description,
+                features: featuresArray,
+                specifications: specsObject,
+                imageUrl
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+              
+            },
+               credentials:"include"
+>>>>>>> d5b3afac5a2ae52b574159e3f4762e8bd9dff699
 
             const data = await result.json();
             console.log("Product added:", data);

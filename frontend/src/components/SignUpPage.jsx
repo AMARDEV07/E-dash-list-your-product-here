@@ -60,6 +60,7 @@ function SignUpPage() {
       return;
     }
 
+<<<<<<< HEAD
     try {
       setLoading(true);
       
@@ -70,6 +71,15 @@ function SignUpPage() {
         headers: { "Content-Type": "application/json" },
         credentials: "include"
       });
+=======
+    // === API Call ===
+    let result = await fetch("https://e-dash-list-your-product-here-3.onrender.com/register", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password }),
+      headers: { "Content-Type": "application/json" },
+               credentials:"include"
+    });
+>>>>>>> d5b3afac5a2ae52b574159e3f4762e8bd9dff699
 
       if (!result.ok) {
         throw new Error(`HTTP error! Status: ${result.status}`);
