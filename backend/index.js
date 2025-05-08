@@ -13,24 +13,9 @@ const mongoose = require("mongoose");
 dotenv.config();
 const app = express();
 
-
-
-
-const allowedOrigins = [
-  "https://e-dash-list-your-product-here.onrender.com", // Backend's own frontend (if applicable)
-  "https://e-dash-list-your-product-here-bcoi-hlvky00qy.vercel.app", // Production frontend
-  "http://localhost:5173" // Local development
-];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true // Required for cookies/auth headers
+  origin:"https://e-dash-list-your-product-here-bcoi.vercel.app",
+  credentials:true
 }));
 
 app.use(express.json());

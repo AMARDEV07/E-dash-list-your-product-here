@@ -8,9 +8,6 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
-  const backendUrl=import.meta.env.VITE_BACKEND_URL;
-  
-
 
 
 
@@ -41,11 +38,10 @@ function LoginPage() {
 
     }
     
-      let result = await fetch(`${backendUrl}/login`, {
+      let result = await fetch("http://localhost:3000/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
-         credentials: "include"
       });
 
       result = await result.json();
