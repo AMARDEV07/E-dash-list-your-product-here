@@ -64,7 +64,7 @@ function SignUpPage() {
     }
 
     // === API Call ===
-    let result = await fetch("http://localhost:3000/register", {
+    let result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/register`, {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: { "Content-Type": "application/json" },
