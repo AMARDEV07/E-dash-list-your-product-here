@@ -38,7 +38,7 @@ function LoginPage() {
 
     }
     
-      let result = await fetch("http://localhost:3000/login", {
+      let result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
