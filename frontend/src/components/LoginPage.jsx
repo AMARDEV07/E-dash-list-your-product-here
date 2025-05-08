@@ -38,7 +38,7 @@ function LoginPage() {
 
     }
     
-      let result = await fetch("http://localhost:3000/login", {
+      let result = await fetch("https://e-dash-list-your-product-here-2.onrender.com/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
