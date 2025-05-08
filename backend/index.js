@@ -13,7 +13,9 @@ const mongoose = require("mongoose");
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin:["https://e-dash-list-your-product-here-bcoi.vercel.app"]
+}));
 app.use(express.json());
 
 // User Register
