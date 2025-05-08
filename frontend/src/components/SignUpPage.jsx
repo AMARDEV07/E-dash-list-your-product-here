@@ -68,6 +68,7 @@ function SignUpPage() {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
       headers: { "Content-Type": "application/json" },
+               credentials:"include"
     });
 
     result = await result.json();
