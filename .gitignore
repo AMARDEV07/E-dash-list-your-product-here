@@ -1,0 +1,52 @@
+# Node modules (both backend and frontend)
+node_modules/
+**/node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build output
+dist/
+build/
+
+# OS/System files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Coverage reports
+coverage/
+
+# MongoDB data dumps
+dump/
+
+# Optional: ImageKit / Upload folders (if storing local dev files)
+uploads/
+public/uploads/
+
+# React specific (if using CRA)
+*.cache
+.cache/
+.eslintcache
+
+# Optional: Docker
+*.pid
+docker-compose.override.yml
