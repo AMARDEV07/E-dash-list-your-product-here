@@ -64,6 +64,7 @@
 
 
 e-dash/
+
 ├── frontend/ # React app
 │ ├── src/
 │ │ ├── components/ # UI Components
